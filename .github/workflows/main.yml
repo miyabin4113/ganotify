@@ -36,11 +36,10 @@ jobs:
           yarn lost
 
       - name: Slack Notification
-        uses: homoluctus/slatify@master
+        uses: lazy-actions/slatify
         if: ${{ failure() }}
         with:
           type: ${{ job.status }}  # jobの成否を代入(Failure/Success)
-          job_name: '*Lint Check*'
-          channel: '#random'
+          job_name: '*Auto nuxt generate*'
         env:
           SLACK_WEBHOOK: https://hooks.slack.com/services/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

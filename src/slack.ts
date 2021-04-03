@@ -33,8 +33,6 @@ export class Slack extends IncomingWebhook {
       type: 'section',
       fields: [
         { type: 'mrkdwn', text: `*repository*\n<${repo_url}|${owner}/${repo}>` },
-        { type: 'mrkdwn', text: `*ref*\n${ref}` },
-        { type: 'mrkdwn', text: `*event name*\n${eventName}` },
         { type: 'mrkdwn', text: `*workflow*\n<${action_url}|${workflow}>` },
       ]
     }

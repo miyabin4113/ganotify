@@ -33,7 +33,7 @@ jobs:
           git config --local user.name "github actions"
       - name: Hello World 🌅
         run: |
-          echo $TEXT
+          yarn lost
 
       - name: Slack Notification
         uses: homoluctus/slatify@master

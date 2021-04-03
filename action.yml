@@ -1,11 +1,28 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Ganotify'
+description: 'Slack Notification for Github Actions'
+author: 'miyabin'
 inputs:
-  milliseconds: # change this
+  type:
+    description: 'job status (success or failure)'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+  job_name:
+    description: 'job name of workflow (format: markdown)'
+    required: true
+  username:
+    description: 'slack username'
+    required: false
+    default: 'Github Actions'
+  icon_emoji:
+    description: 'slack icon emoji'
+    required: false
+    default: 'github'
+  channel:
+    description: 'slack channel'
+    required: false
+    default: '#general'
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: 'bell'
+  color: 'white'

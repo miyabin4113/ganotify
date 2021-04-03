@@ -1,0 +1,46 @@
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+env:
+  TEXT: "Hello World!"
+
+jobs:
+  generate:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node: [14]
+
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup node env 🏗
+        uses: actions/setup-node@v2.1.3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Setup config 📝
+        run: |
+          git config --local user.email "githubactions@example.com"
+          git config --local user.name "github actions"
+      - name: Hello World 🌅
+        run: |
+          echo $TEXT
+
+      - name: Slack Notification
+        uses: homoluctus/slatify@master
+        if: always()  # jobの成否に関わらずSlackへ通知
+        with:
+          type: ${{ job.status }}  # jobの成否を代入(Failure/Success)
+          job_name: '*Lint Check*'
+          channel: '#random'
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

@@ -1,19 +1,31 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import { Slack } from './slack';
+import { validateStatus } from './utils';
 
-async function run(): Promise<void> {
+async function run() {
   try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+    const type: string = core.getInput('type', { required: true });
+    const job_name: string = core.getInput('job_name', { required: true });
+    const username: string = core.getInput('username') || 'GitHub Actions';
+    const icon_emoji: string = core.getInput('icon_emoji') || 'github';
+    const channel: string = core.getInput('channel') || '#general';
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    const SLACK_WEBHOOK: string = process.env.SLACK_WEBHOOK || '';
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    core.setFailed(error.message)
+    if (SLACK_WEBHOOK === '') {
+      throw new Error('ERROR: Missing "SLACK_WEBHOOK"\nPlease configure "SLACK_WEBHOOK" as environment variable');
+    }
+
+    const status = validateStatus(type);
+    const slack = new Slack(SLACK_WEBHOOK, username, icon_emoji, channel);
+    const result = await slack.notify(status, job_name);
+
+    core.debug(`Response from Slack: ${JSON.stringify(result)}`);
+
+  } catch (err) {
+    console.log(err)
+    core.setFailed(err.message);
   }
 }
 
-run()
+run();

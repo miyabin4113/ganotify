@@ -43,4 +43,4 @@ jobs:
           job_name: '*Lint Check*'
           channel: '#random'
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: https://hooks.slack.com/services/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

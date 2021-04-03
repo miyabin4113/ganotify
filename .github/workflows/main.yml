@@ -36,7 +36,7 @@ jobs:
           yarn lost
 
       - name: Slack Notification
-        uses: lazy-actions/slatify
+        uses: homoluctus/slatify
         if: ${{ failure() }}
         with:
           type: ${{ job.status }}  # jobの成否を代入(Failure/Success)

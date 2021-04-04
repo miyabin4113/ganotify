@@ -8,8 +8,6 @@ import {
 } from '@slack/webhook'
 
 export class Slack extends IncomingWebhook {
-  // 0: failure, 1: success
-  static readonly color: string[] = ['#cb2431', '#2cbe4e']
 
   constructor(
     url: string,
@@ -34,8 +32,6 @@ export class Slack extends IncomingWebhook {
       type: 'section',
       fields: [
         {type: 'mrkdwn', text: `*repository*\n<${repo_url}|${owner}/${repo}>`},
-        {type: 'mrkdwn', text: `*ref*\n${ref}`},
-        {type: 'mrkdwn', text: `*event name*\n${eventName}`},
         {type: 'mrkdwn', text: `*workflow*\n<${action_url}|${workflow}>`}
       ]
     }
@@ -53,7 +49,7 @@ export class Slack extends IncomingWebhook {
     const text_for_slack: MrkdwnElement = {type: 'mrkdwn', text}
     const blocks: SectionBlock = {...this.blocks, text: text_for_slack}
     const attachments: MessageAttachment = {
-      color: Slack.color[status],
+      color: '#cb2431',
       blocks: [blocks]
     }
     const payload: IncomingWebhookSendArguments = {

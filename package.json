@@ -1,6 +1,6 @@
 {
-  "name": "typescript-action",
-  "version": "0.0.0",
+  "name": "ganotify",
+  "version": "0.1.2",
   "private": true,
   "description": "TypeScript template action",
   "main": "lib/main.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/miyabin66/ganotify.git"
   },
   "keywords": [
     "actions",
@@ -27,7 +27,6 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
-    "@octokit/rest": "^18.5.2",
     "@slack/webhook": "^6.0.0"
   },
   "devDependencies": {

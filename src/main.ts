@@ -8,7 +8,6 @@ async function run() {
     const job_name: string = core.getInput('job_name', {required: true})
     const username: string = core.getInput('username') || 'GitHub Actions'
     const icon_emoji: string = core.getInput('icon_emoji') || 'github'
-    const channel: string = core.getInput('channel') || '#general'
 
     const SLACK_WEBHOOK: string = process.env.SLACK_WEBHOOK || ''
 
@@ -19,7 +18,7 @@ async function run() {
     }
 
     const status = validateStatus(type)
-    const slack = new Slack(SLACK_WEBHOOK, username, icon_emoji, channel)
+    const slack = new Slack(SLACK_WEBHOOK, username, icon_emoji)
     const result = await slack.notify(status, job_name)
 
     core.debug(`Response from Slack: ${JSON.stringify(result)}`)

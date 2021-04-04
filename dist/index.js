@@ -54,13 +54,12 @@ function run() {
             const job_name = core.getInput('job_name', { required: true });
             const username = core.getInput('username') || 'GitHub Actions';
             const icon_emoji = core.getInput('icon_emoji') || 'github';
-            const channel = core.getInput('channel') || '#general';
             const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK || '';
             if (SLACK_WEBHOOK === '') {
                 throw new Error('ERROR: Missing "SLACK_WEBHOOK"\nPlease configure "SLACK_WEBHOOK" as environment variable');
             }
             const status = utils_1.validateStatus(type);
-            const slack = new slack_1.Slack(SLACK_WEBHOOK, username, icon_emoji, channel);
+            const slack = new slack_1.Slack(SLACK_WEBHOOK, username, icon_emoji);
             const result = yield slack.notify(status, job_name);
             core.debug(`Response from Slack: ${JSON.stringify(result)}`);
         }
@@ -114,8 +113,8 @@ const github = __importStar(__webpack_require__(5438));
 const core = __importStar(__webpack_require__(2186));
 const webhook_1 = __webpack_require__(1095);
 class Slack extends webhook_1.IncomingWebhook {
-    constructor(url, username = 'GitHub Actions', icon_emoji = 'github', channel = '#general') {
-        super(url, { username, icon_emoji, channel });
+    constructor(url, username = 'GitHub Actions', icon_emoji = 'github') {
+        super(url, { username, icon_emoji });
     }
     /**
      * Get slack blocks UI

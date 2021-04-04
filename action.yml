@@ -16,10 +16,6 @@ inputs:
     description: 'slack icon emoji'
     required: false
     default: 'github'
-  channel:
-    description: 'slack channel'
-    required: false
-    default: '#general'
 runs:
   using: 'node12'
   main: 'dist/index.js'

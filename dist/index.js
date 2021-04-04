@@ -59,7 +59,7 @@ function run() {
             if (SLACK_WEBHOOK === '') {
                 throw new Error('ERROR: Missing "SLACK_WEBHOOK"\nPlease configure "SLACK_WEBHOOK" as environment variable');
             }
-            const status = utils_1.validateStatus(type);
+            const status = utils_1.isValidCondition(type);
             const slack = new slack_1.Slack(SLACK_WEBHOOK, username, icon_emoji, channel);
             const result = yield slack.notify(status, job_name);
             core.debug(`Response from Slack: ${JSON.stringify(result)}`);

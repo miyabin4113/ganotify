@@ -59,7 +59,7 @@ function run() {
             if (SLACK_WEBHOOK === '') {
                 throw new Error('ERROR: Missing "SLACK_WEBHOOK"\nPlease configure "SLACK_WEBHOOK" as environment variable');
             }
-            const status = utils_1.isValidCondition(type);
+            const status = utils_1.validateStatus(type);
             const slack = new slack_1.Slack(SLACK_WEBHOOK, username, icon_emoji, channel);
             const result = yield slack.notify(status, job_name);
             core.debug(`Response from Slack: ${JSON.stringify(result)}`);
@@ -130,8 +130,6 @@ class Slack extends webhook_1.IncomingWebhook {
             type: 'section',
             fields: [
                 { type: 'mrkdwn', text: `*repository*\n<${repo_url}|${owner}/${repo}>` },
-                { type: 'mrkdwn', text: `*ref*\n${ref}` },
-                { type: 'mrkdwn', text: `*event name*\n${eventName}` },
                 { type: 'mrkdwn', text: `*workflow*\n<${action_url}|${workflow}>` }
             ]
         };
@@ -144,7 +142,7 @@ class Slack extends webhook_1.IncomingWebhook {
         const text_for_slack = { type: 'mrkdwn', text };
         const blocks = Object.assign(Object.assign({}, this.blocks), { text: text_for_slack });
         const attachments = {
-            color: Slack.color[status],
+            color: '#cb2431',
             blocks: [blocks]
         };
         const payload = {
@@ -171,8 +169,6 @@ class Slack extends webhook_1.IncomingWebhook {
     }
 }
 exports.Slack = Slack;
-// 0: failure, 1: success
-Slack.color = ['#cb2431', '#2cbe4e'];
 
 
 /***/ }),

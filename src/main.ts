@@ -1,56 +1,29 @@
-import * as core from '@actions/core';
-import {IncomingWebhookDefaultArguments} from '@slack/webhook';
-
-import {validateStatus, isValidCondition} from './utils';
-import {Slack} from './slack';
+import * as core from '@actions/core'
+import { Slack } from './slack';
+import { validateStatus } from './utils';
 
 async function run() {
   try {
-    const status: string = validateStatus(
-      core.getInput('type', {required: true}).toLowerCase()
-    );
-    const jobName: string = core.getInput('job_name', {required: true});
-    const url: string = process.env.SLACK_WEBHOOK || core.getInput('url');
-    let mention: string = core.getInput('mention');
-    let mentionCondition: string = core.getInput('mention_if').toLowerCase();
-    const slackOptions: IncomingWebhookDefaultArguments = {
-      username: core.getInput('username'),
-      channel: core.getInput('channel'),
-      icon_emoji: core.getInput('icon_emoji')
-    };
-    const commitFlag: boolean = core.getInput('commit') === 'true';
-    const token: string = core.getInput('token');
+    const type: string = core.getInput('type', { required: true });
+    const job_name: string = core.getInput('job_name', { required: true });
+    const username: string = core.getInput('username') || 'GitHub Actions';
+    const icon_emoji: string = core.getInput('icon_emoji') || 'github';
+    const channel: string = core.getInput('channel') || '#general';
 
-    if (mention && !isValidCondition(mentionCondition)) {
-      mention = '';
-      mentionCondition = '';
-      console.warn(`
-      Ignore slack message metion:
-      mention_if: ${mentionCondition} is invalid
-      `);
+    const SLACK_WEBHOOK: string = process.env.SLACK_WEBHOOK || '';
+
+    if (SLACK_WEBHOOK === '') {
+      throw new Error('ERROR: Missing "SLACK_WEBHOOK"\nPlease configure "SLACK_WEBHOOK" as environment variable');
     }
 
-    if (url === '') {
-      throw new Error(`[Error] Missing Slack Incoming Webhooks URL.
-      Please configure "SLACK_WEBHOOK" as environment variable or
-      specify the key called "url" in "with" section.
-      `);
-    }
+    const status = validateStatus(type);
+    const slack = new Slack(SLACK_WEBHOOK, username, icon_emoji, channel);
+    const result = await slack.notify(status, job_name);
 
-    const slack = new Slack();
-    const payload = await slack.generatePayload(
-      jobName,
-      status,
-      mention,
-      mentionCondition,
-      commitFlag,
-      token
-    );
-    console.info(`Generated payload for slack: ${JSON.stringify(payload)}`);
+    core.debug(`Response from Slack: ${JSON.stringify(result)}`);
 
-    await slack.notify(url, slackOptions, payload);
-    console.info('Sent message to Slack');
   } catch (err) {
+    console.log(err)
     core.setFailed(err.message);
   }
 }

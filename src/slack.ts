@@ -44,7 +44,7 @@ export class Slack extends IncomingWebhook {
    * Generate slack payload
    */
   protected generatePayload(
-    status: any,
+    status: string,
     text: string
   ): IncomingWebhookSendArguments {
     const text_for_slack: MrkdwnElement = {type: 'mrkdwn', text}
@@ -67,7 +67,7 @@ export class Slack extends IncomingWebhook {
    * Notify information about github actions to Slack
    */
   public async notify(
-    status: any,
+    status: string,
     text: string
   ): Promise<IncomingWebhookResult> {
     try {

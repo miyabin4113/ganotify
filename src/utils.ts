@@ -1,5 +1,4 @@
 const jobStatuses: string[] = ['success', 'failure', 'cancelled']
-const metionConditions: string[] = [...jobStatuses, 'always']
 
 function isValid(target: string, validList: string[]): boolean {
   return validList.includes(target)
@@ -15,8 +14,4 @@ export function getStatus(jobStatus: string): string {
     throw new Error('Invalid type parameter')
   }
   return jobStatus
-}
-
-export function isValidCondition(condition: string): boolean {
-  return isValid(condition, metionConditions)
 }

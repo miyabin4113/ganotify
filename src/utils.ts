@@ -10,7 +10,7 @@ function isValid(target: string, validList: string[]): boolean {
  * @param {string} jobStatus
  * @returns {string|Error}
  */
-export function validateStatus(jobStatus: string): string {
+export function getStatus(jobStatus: string): string {
   if (!isValid(jobStatus, jobStatuses)) {
     throw new Error('Invalid type parameter')
   }

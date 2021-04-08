@@ -49,9 +49,8 @@ export class Slack extends IncomingWebhook {
   ): IncomingWebhookSendArguments {
     const text_for_slack: MrkdwnElement = {type: 'mrkdwn', text}
     const blocks: SectionBlock = {...this.blocks, text: text_for_slack}
-    const colorStatus: number = status === 'failure' ? 0 : 1
     const attachments: MessageAttachment = {
-      color: Slack.color[colorStatus],
+      color: Slack.color[status],
       blocks: [blocks]
     }
     const payload: IncomingWebhookSendArguments = {

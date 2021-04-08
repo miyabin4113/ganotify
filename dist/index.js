@@ -58,7 +58,7 @@ function run() {
             if (SLACK_WEBHOOK === '') {
                 throw new Error('ERROR: Missing "SLACK_WEBHOOK"\nPlease configure "SLACK_WEBHOOK" as environment variable');
             }
-            const status = utils_1.validateStatus(type);
+            const status = utils_1.getStatus(type);
             const slack = new slack_1.Slack(SLACK_WEBHOOK, username, icon_emoji);
             const result = yield slack.notify(status, job_name);
             core.debug(`Response from Slack: ${JSON.stringify(result)}`);
@@ -181,9 +181,8 @@ Slack.color = ['#cb2431', '#2cbe4e'];
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isValidCondition = exports.validateStatus = void 0;
+exports.getStatus = void 0;
 const jobStatuses = ['success', 'failure', 'cancelled'];
-const metionConditions = [...jobStatuses, 'always'];
 function isValid(target, validList) {
     return validList.includes(target);
 }
@@ -192,17 +191,13 @@ function isValid(target, validList) {
  * @param {string} jobStatus
  * @returns {string|Error}
  */
-function validateStatus(jobStatus) {
+function getStatus(jobStatus) {
     if (!isValid(jobStatus, jobStatuses)) {
         throw new Error('Invalid type parameter');
     }
     return jobStatus;
 }
-exports.validateStatus = validateStatus;
-function isValidCondition(condition) {
-    return isValid(condition, metionConditions);
-}
-exports.isValidCondition = isValidCondition;
+exports.getStatus = getStatus;
 
 
 /***/ }),

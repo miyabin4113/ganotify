@@ -140,8 +140,9 @@ class Slack extends webhook_1.IncomingWebhook {
     generatePayload(status, text) {
         const text_for_slack = { type: 'mrkdwn', text };
         const blocks = Object.assign(Object.assign({}, this.blocks), { text: text_for_slack });
+        const colorStatus = status === 'failure' ? 0 : 1;
         const attachments = {
-            color: '#cb2431',
+            color: Slack.color[colorStatus],
             blocks: [blocks]
         };
         const payload = {
@@ -168,6 +169,8 @@ class Slack extends webhook_1.IncomingWebhook {
     }
 }
 exports.Slack = Slack;
+// 0: failure, 1: success
+Slack.color = ['#cb2431', '#2cbe4e'];
 
 
 /***/ }),

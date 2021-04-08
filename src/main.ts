@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {Slack} from './slack'
-import {validateStatus} from './utils'
+import {getStatus} from './utils'
 
 async function run() {
   try {
@@ -17,7 +17,7 @@ async function run() {
       )
     }
 
-    const status = validateStatus(type)
+    const status = getStatus(type)
     const slack = new Slack(SLACK_WEBHOOK, username, icon_emoji)
     const result = await slack.notify(status, job_name)
 

@@ -19,6 +19,6 @@ jobs:
         uses: miyabin66/ganotify@main
         with:
           type: ${{ job.status }}
-          job_name: '*Auto Nuxt Generate* ${{ job.status }}'
+          job_name: 'Job ${{ job.status }}'
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

@@ -2,7 +2,7 @@ import * as core from '@actions/core'
 import {Slack} from './slack'
 import {getStatus} from './utils'
 
-async function run() {
+async function run(): Promise<void> {
   try {
     const type: string = core.getInput('type', {required: true})
     const job_name: string = core.getInput('job_name', {required: true})
@@ -21,10 +21,12 @@ async function run() {
     const slack = new Slack(SLACK_WEBHOOK, username, icon_emoji)
     const result = await slack.notify(status, job_name)
 
+    // eslint-disable-next-line i18n-text/no-en
     core.debug(`Response from Slack: ${JSON.stringify(result)}`)
   } catch (err) {
-    console.log(err)
-    core.setFailed(err.message)
+    if (err instanceof Error) {
+      core.setFailed(err.message)
+    }
   }
 }
 
